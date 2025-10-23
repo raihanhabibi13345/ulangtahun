@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Selamat Ulang Tahun RAFKA 🎉</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-size: 3rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      animation: fadeInDown 1.5s ease forwards;
+    }
+
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .typing {
+      display: inline-block;
+      border-right: 3px solid #fff;
+      white-space: pre-wrap;
+      font-size: 1.2rem;
+      max-width: 600px;
+      line-height: 1.6;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0% { border-color: transparent; }
+      50% { border-color: white; }
+      100% { border-color: transparent; }
+    }
+
+    /* Confetti */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      padding: 20px;
+    }
+
+    .button {
+      margin-top: 30px;
+      padding: 12px 24px;
+      background: #fff;
+      color: #ff5e78;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .button:hover {
+      background: #ff5e78;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confetti"></canvas>
+
+  <div class="content">
+    <h1>🎉 BARAKALLAHU FI UMRIK RAFKA 🎂</h1>
+    <div id="typing" class="typing"></div>
+    <button class="button" onclick="ulang()">🎈 Ulang Animasi</button>
+  </div>
+
+  <script>
+    // Efek mesin ketik
+    const text = `Hari ini adalah hari spesialmu, RAFKA ✨\n
+Semoga di usia yang baru ini, semua kebahagiaan, kesehatan, dan keberkahan selalu menyertaimu 🍀\n
+Tetap jadi pribadi yang keren, ceria, dan menginspirasi semua orang di sekitarmu.Ya Allah, panjangkanlah umur sahabat kami dalam ketaatan-Mu. Jadikanlah setiap hari sebagai kesempatan berbuat kebajikan dan mendekat pada-Mu.
+
+Aamiin ya Rabbal 'Alamin. 
+Selamat ulang tahun, RAFKA! 🥳🎂🎁`;
+    const typingDiv = document.getElementById('typing');
+    let index = 0;
+
+    function ketik() {
+      if (index < text.length) {
+        typingDiv.textContent += text.charAt(index);
+        index++;
+        setTimeout(ketik, 40);
+      }
+    }
+
+    function ulang() {
+      typingDiv.textContent = '';
+      index = 0;
+      ketik();
+    }
+
+    ketik();
+
+    // Confetti effect
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let confetti = [];
+    const colors = ['#ff5e78', '#ffcc00', '#00c2ff', '#6fff8c', '#ff7cf5'];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function buatConfetti() {
+      for (let i = 0; i < 150; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * 10 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10 - 10
+        });
+      }
+    }
+
+    function gambarConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach(c => {
+        ctx.beginPath();
+        ctx.fillStyle = c.color;
+        ctx.ellipse(c.x, c.y, c.r, c.r / 2, Math.PI / 4, 0, 2 * Math.PI);
+        ctx.fill();
+      });
+      updateConfetti();
+    }
+
+    function updateConfetti() {
+      confetti.forEach(c => {
+        c.y += Math.cos(c.d) + c.r / 2;
+        c.x += Math.sin(0.01);
+        if (c.y > canvas.height) {
+          c.y = -10;
+          c.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    function animasi() {
+      requestAnimationFrame(animasi);
+      gambarConfetti();
+    }
+
+    resizeCanvas();
+    buatConfetti();
+    animasi();
+
+    window.addEventListener('resize', resizeCanvas);
+  </script>
+
+</body>
+</html>
